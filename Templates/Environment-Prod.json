@@ -1,0 +1,10 @@
+{
+    "SubscriptionId": "7d17daee-8002-41ba-8212-2ee66a6c9c64",
+    "ResourceGroupName": "rg-cloud-course",
+    "Location": "westus",
+
+    "WebAppName": "TestWebAppCloud1",
+    "PythonVersion": "PYTHON|3.11",
+    "Sku": "F1",
+    "RepoUrl": "github..."
+}
