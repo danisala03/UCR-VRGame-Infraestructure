@@ -17,19 +17,34 @@ function CreateAppService {
         [string]$PythonVersion,
         
         [Parameter(Mandatory=$true)]
-        [string]$RepoUrl
+        [string]$RepoUrl,
+
+        [Parameter(Mandatory=$true)]
+        [string]$VNetName,
+
+        [Parameter(Mandatory=$true)]
+        [string]$SubnetName
     )
 
     # Variables set to read the ARM Template.
     $jsonFileLocation = "$PSScriptRoot\Templates\AppService.json"
 
     # Creates the App Service.
-    $operationResult = az deployment group create --resource-group $RgName --parameters webAppName=$WebAppName sku=$Sku repoUrl=$RepoUrl linuxFxVersion=$PythonVersion location=$Location --template-file $jsonFileLocation
-    
+    $operationResult = az deployment group create --resource-group $RgName --parameters webAppName=$WebAppName repoUrl=$RepoUrl sku=$Sku repoUrl=$RepoUrl location=$Location --template-file $jsonFileLocation
     if ($operationResult) {
-        Write-Host "App Service: $WebAppName created"
+        Write-Host "App Service: $WebAppName created" -ForegroundColor Green
     } else {
         Write-Error "Error creating App Service: $WebAppName"
         exit -1
     }
+
+    # Relates the Vnet to the App Service.
+    $operationResult = az webapp vnet-integration add --resource-group $RgName --name $WebAppName --vnet $VNetName --subnet $SubnetName
+    if ($operationResult) {
+        Write-Host "VNet: $VNetName related to App Service: $WebAppName" -ForegroundColor Green
+    } else {
+        Write-Error "Error relating VNet: $VNetName to App Service: $WebAppName"
+        exit -1
+    }
+
 }

@@ -1,10 +1,15 @@
 {
-    "SubscriptionId": "7d17daee-8002-41ba-8212-2ee66a6c9c64",
+    "SubscriptionId": "e45ca7e3-4bfb-4fc4-9ffc-3eff97357c61",
     "ResourceGroupName": "rg-cloud-course",
     "Location": "westus",
 
     "WebAppName": "TestWebAppCloud1",
     "PythonVersion": "PYTHON|3.11",
-    "Sku": "F1",
-    "RepoUrl": "github..."
+    "Sku": "B1",
+    "RepoUrl": "https://github.com/danisala03/flask-skeleton",
+
+    "VNetName": "VnetUcr",
+    "SubnetName": "SubnetUcr",
+
+    "NSGName": "NSGUcr"
 }

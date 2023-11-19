@@ -7,6 +7,6 @@ function CreateResourceGroup {
     )
 
     # Creates Resource Group
-    #az group create --name $RgName --location $Location
-    Write-Host "Resource Group: $RgName created in $Location"
+    az group create --name $RgName --location $Location
+    Write-Host "Resource Group: $RgName created in $Location" -ForegroundColor Green
 }

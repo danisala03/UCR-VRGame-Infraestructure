@@ -26,10 +26,21 @@ Write-Host "Logged in. Subscription set to: $($environmentJson.SubscriptionId)"
 # Imports to call the functions from the other scripts.
 . "$PSScriptRoot\CreateResourceGroup.ps1"
 . "$PSScriptRoot\CreateAppService.ps1"
+. "$PSScriptRoot\CreateVNet.ps1"
+. "$PSScriptRoot\CreateNSG.ps1"
 
 # Creates Resource Group
+Write-Host "Creating Resource Group: $($environmentJson.ResourceGroupName)"
 CreateResourceGroup -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location
 
-# Creates App Service
-#CreateAppService -RgName $environmentJson.ResourceGroupName $Location $environmentJson.Location -WebAppName $environmentJson.WebAppName -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl
+# Create VNet
+Write-Host "Creating VNet: $($environmentJson.VNetName)"
+#CreateVNet -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location -VNetName $environmentJson.VNetName -SubnetName $environmentJson.SubnetName
 
+# Creates App Service
+Write-Host "Creating App Service: $($environmentJson.WebAppName)"
+#CreateAppService -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location -WebAppName $environmentJson.WebAppName -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl -VNetName $environmentJson.VNetName -SubnetName $environmentJson.SubnetName
+
+# Creates and Configures Azure Network Security Group (NSG)
+Write-Host "Creating and Configuring Azure Network Security Group (NSG): $($environmentJson.NSGName)"
+CreatePublicNSG -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location -NSGName $environmentJson.NSGName -VNetName $environmentJson.VNetName -SubnetName $environmentJson.SubnetName

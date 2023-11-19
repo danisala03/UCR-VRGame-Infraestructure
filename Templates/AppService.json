@@ -33,7 +33,7 @@
       },
       "linuxFxVersion": {
         "type": "string",
-        "defaultValue": "DOTNETCORE|3.0",
+        "defaultValue": "Python|3.11",
         "metadata": {
           "description": "The Runtime stack of current web app"
         }
@@ -91,7 +91,7 @@
         "name": "[format('{0}/{1}', parameters('webAppName'), 'web')]",
         "properties": {
           "repoUrl": "[parameters('repoUrl')]",
-          "branch": "master",
+          "branch": "main",
           "isManualIntegration": true
         },
         "dependsOn": [
