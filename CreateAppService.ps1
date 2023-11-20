@@ -38,6 +38,10 @@ function CreateAppService {
         exit -1
     }
 
+    # Wait for 2 minutes the changes
+    Write-Host "Waiting for 2 minutes to apply changes..."
+    Start-Sleep -s 120
+
     # Relates the Vnet to the App Service.
     $operationResult = az webapp vnet-integration add --resource-group $RgName --name $WebAppName --vnet $VNetName --subnet $SubnetName
     if ($operationResult) {
@@ -46,5 +50,9 @@ function CreateAppService {
         Write-Error "Error relating VNet: $VNetName to App Service: $WebAppName"
         exit -1
     }
+
+    # Wait for 2 minutes the changes
+    Write-Host "Waiting for 2 minutes to apply changes..."
+    Start-Sleep -s 120
 
 }

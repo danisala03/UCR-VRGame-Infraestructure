@@ -1,15 +1,25 @@
 {
     "SubscriptionId": "e45ca7e3-4bfb-4fc4-9ffc-3eff97357c61",
     "ResourceGroupName": "rg-cloud-course",
-    "Location": "westus",
+    "Location": "westus3",
+    "SecondaryLocation": "eastus2",
 
     "WebAppName": "TestWebAppCloud1",
     "PythonVersion": "PYTHON|3.11",
     "Sku": "B1",
     "RepoUrl": "https://github.com/danisala03/flask-skeleton",
 
-    "VNetName": "VnetUcr",
-    "SubnetName": "SubnetUcr",
+    "VNetName": "VNetUcr",
+    "PublicSubnetName": "PublicSubnetUcr",
+    "PrivateSubnetName": "PrivateSubnetUcr",
 
-    "NSGName": "NSGUcr"
+    "NSGPublicName": "NSGPublicUcr",
+    "NSGPrivateName": "NSGPrivateUcr",
+
+    "KeyVaultName": "KeyVaultUcr",
+    "KeyVaultKey": "KeyUcr",
+
+    "CosmosDBAccountName": "cosmos-db-ucr",
+
+    "UserAssignedIdentityName": "UserAssignedIdentityUcr"
 }
