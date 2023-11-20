@@ -23,7 +23,10 @@ function CreateAppService {
         [string]$VNetName,
 
         [Parameter(Mandatory=$true)]
-        [string]$SubnetName
+        [string]$PublicSubnetName,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$PrivateSubnetName
     )
 
     # Variables set to read the ARM Template.
@@ -43,7 +46,15 @@ function CreateAppService {
     Start-Sleep -s 120
 
     # Relates the Vnet to the App Service.
-    $operationResult = az webapp vnet-integration add --resource-group $RgName --name $WebAppName --vnet $VNetName --subnet $SubnetName
+    $operationResult = az webapp vnet-integration add --resource-group $RgName --name $WebAppName --vnet $VNetName --subnet $PublicSubnetName
+    if ($operationResult) {
+        Write-Host "VNet: $VNetName related to App Service: $WebAppName" -ForegroundColor Green
+    } else {
+        Write-Error "Error relating VNet: $VNetName to App Service: $WebAppName"
+        exit -1
+    }
+
+    $operationResult = az webapp vnet-integration add --resource-group $RgName --name $WebAppName --vnet $VNetName --subnet $PrivateSubnetName
     if ($operationResult) {
         Write-Host "VNet: $VNetName related to App Service: $WebAppName" -ForegroundColor Green
     } else {
