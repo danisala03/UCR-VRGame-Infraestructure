@@ -22,7 +22,10 @@ function CreateKeyVault {
         [string]$VNetName,
 
         [Parameter(Mandatory=$true)]
-        [string]$PrivateSubnetName
+        [string]$PrivateSubnetName,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$VMSSName
     )
 
     # Get VNet details.
@@ -49,7 +52,7 @@ function CreateKeyVault {
     # Create Key Vault Key.
     az keyvault key create --vault-name $KeyVaultName -n $KeyVaultKey --protection software
     
-    # Set Key Vault Key permissions.
+    # Set Key Vault Access Oikuct for UA and Cosmos DB.
     az keyvault set-policy --name $KeyVaultName --object-id $uaId --key-permissions get list wrapKey unwrapKey
 
     az keyvault network-rule add -g $RgName -n $KeyVaultName --ip-address "191.10.18.0/24"
@@ -57,6 +60,12 @@ function CreateKeyVault {
     az keyvault update -g $RgName -n $KeyVaultName --bypass AzureServices
 
     az keyvault update -g $RgName -n $KeyVaultName --default-action Deny
+
+    # Get VMSS Managed Identity ID
+    #$identityId = $(az vmss identity show -n $VMSSName -g $RgName --query principalId --output tsv)
+
+    # Set Key Vault Access Policy for VMSS.
+    #az keyvault set-policy -n $KeyVaultName -g $RgName --object-id $identityId --secret-permissions get list
 
     # Wait for 2 minutes the changes
     Write-Host "Waiting for 2 minutes to apply changes..."

@@ -1,25 +1,40 @@
 {
     "SubscriptionId": "e45ca7e3-4bfb-4fc4-9ffc-3eff97357c61",
-    "ResourceGroupName": "rg-cloud-course",
+    "ResourceGroupName": "rg-cloud-course125",
     "Location": "westus3",
     "SecondaryLocation": "eastus2",
 
-    "WebAppName": "TestWebAppCloud1",
-    "PythonVersion": "PYTHON|3.11",
-    "Sku": "B1",
-    "RepoUrl": "https://github.com/danisala03/flask-skeleton",
-
-    "VNetName": "VNetUcr",
-    "PublicSubnetName": "PublicSubnetUcr",
-    "PrivateSubnetName": "PrivateSubnetUcr",
+    "VNetName": "VNetUcr1",
+    "PublicSubnetName1": "PublicSubnetUcr512",
+    "PublicSubnetName2": "PublicSubnetUcr5342",
+    "PrivateSubnetName1": "PrivateSubnetUcr35",
+    "PrivateSubnetName2": "PrivateSubnetUcr5142",
+    "VMSSSubnetName": "VMSSSubnetUcr",
 
     "NSGPublicName": "NSGPublicUcr",
     "NSGPrivateName": "NSGPrivateUcr",
 
-    "KeyVaultName": "KeyVaultUcr",
+    "KeyVaultName": "KeyVaultUcr534y64y",
     "KeyVaultKey": "KeyUcr",
 
-    "CosmosDBAccountName": "cosmos-db-ucr",
+    "CosmosDBAccountName": "cosmos-db-ucr15",
 
-    "UserAssignedIdentityName": "UserAssignedIdentityUcr"
+    "UserAssignedIdentityName": "UserAssignedIdentityUcr2",
+
+    "VMSSName": "VMSSUcr3",
+
+    "WebAppNameWestUS": "FrontEndAppUcr1WestUS125",
+    "WebAppNameForGameWestUS": "GameServerAppUcr1WestUS125",
+    "WebAppNameEastUS": "FrontEndAppUcr1EastUS125",
+    "WebAppNameForGameEastUS": "GameServerAppUcr1EastUS125",
+
+    "PythonVersion": "PYTHON|3.11",
+    "Sku": "B1",
+    "RepoUrl": "https://github.com/danisala03/flask-skeleton",
+    
+    "AzFrontDoorProfileNameFrontEnd": "AzFrontDoorProfileUcrFrontEnd5",
+    "AzFrontDoorProfileUcrForGameApp": "AzFrontDoorProfileUcrForGameApp5",
+    "OriginGroupNameFrontEnd": "OriginGroupUcrFrontEnd5",
+    "OriginGroupNameForGameApp": "OriginGroupUcrForGameApp5"
 }
+

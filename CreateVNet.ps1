@@ -11,18 +11,27 @@ function CreateVNet {
         [string]$VNetName,
 
         [Parameter(Mandatory=$true)]
-        [string]$PublicSubnetName,
+        [string]$PublicSubnetName1,
 
         [Parameter(Mandatory=$true)]
-        [string]$PrivateSubnetName
+        [string]$PublicSubnetName2,
+
+        [Parameter(Mandatory=$true)]
+        [string]$PrivateSubnetName1,
+
+        [Parameter(Mandatory=$true)]
+        [string]$PrivateSubnetName2,
+
+        [Parameter(Mandatory=$true)]
+        [string]$VMSSSubnetName
     )
 
     # Creates the VNet.
-    $operationResult = az network vnet create -n $VNetName -g $RgName --address-prefix 10.0.0.0/16 --subnet-name $PublicSubnetName --subnet-prefix 10.0.0.0/24
+    $operationResult = az network vnet create -n $VNetName -g $RgName --address-prefix 10.0.0.0/16 --subnet-name $PublicSubnetName1 --subnet-prefix 10.0.0.0/24
     if ($operationResult) {
-        Write-Host "Virtual Network: $VNetName created with Public Subnet: $PublicSubnetName" -ForegroundColor Green
+        Write-Host "Virtual Network: $VNetName created with Public Subnet: $PublicSubnetName1" -ForegroundColor Green
     } else {
-        Write-Error "Error creating Virtual Network: $VNetName"
+        Write-Error "Error creating Virtual Network: $VNetName and Public Subnet: $PublicSubnetName1"
         exit -1
     }
     
@@ -31,11 +40,38 @@ function CreateVNet {
     Start-Sleep -s 120
 
     # Creates Subnet for Private Access.
-    $operationResult = az network vnet subnet create -g $RgName --vnet-name $VNetName -n $PrivateSubnetName --address-prefix 10.0.2.0/24
+    $operationResult = az network vnet subnet create -g $RgName --vnet-name $VNetName -n $PublicSubnetName2 --address-prefix 10.0.1.0/24
     if ($operationResult) {
-        Write-Host "Private Subnet: $PrivateSubnetName created" -ForegroundColor Green
+        Write-Host "Private Subnet: $PublicSubnetName2 created" -ForegroundColor Green
     } else {
-        Write-Error "Error creating Subnet: AzureBastionSubnet"
+        Write-Error "Error creating Subnet: $PublicSubnetName2"
+        exit -1
+    }
+
+    # Creates Subnet for Private Access.
+    $operationResult = az network vnet subnet create -g $RgName --vnet-name $VNetName -n $PrivateSubnetName1 --address-prefix 10.0.2.0/24
+    if ($operationResult) {
+        Write-Host "Private Subnet: $PrivateSubnetName1 created" -ForegroundColor Green
+    } else {
+        Write-Error "Error creating Subnet: $PrivateSubnetName1"
+        exit -1
+    }
+
+            # Creates Subnet for Private Access.
+    $operationResult = az network vnet subnet create -g $RgName --vnet-name $VNetName -n $PrivateSubnetName2 --address-prefix 10.0.3.0/24
+    if ($operationResult) {
+        Write-Host "Private Subnet: $PrivateSubnetName2 created" -ForegroundColor Green
+    } else {
+        Write-Error "Error creating Subnet: $PrivateSubnetName2"
+        exit -1
+    }
+
+    # Creates Subnet for VSMSS Access.
+    $operationResult = az network vnet subnet create -g $RgName --vnet-name $VNetName -n $VMSSSubnetName --address-prefix 10.0.4.0/24
+    if ($operationResult) {
+        Write-Host "VMSS Subnet: $VMSSSubnetName created" -ForegroundColor Green
+    } else {
+        Write-Error "Error creating Subnet: $VMSSSubnetName"
         exit -1
     }
 
@@ -45,7 +81,7 @@ function CreateVNet {
 
     Write-Host "Registering Service Endpoints..."
     # Registers Key Vault Service.
-    az network vnet subnet update -n $PrivateSubnetName -g $RgName --vnet-name $VNetName --service-endpoints "Microsoft.KeyVault" "Microsoft.AzureCosmosDB"
+    az network vnet subnet update -n $VMSSSubnetName -g $RgName --vnet-name $VNetName --service-endpoints "Microsoft.KeyVault" "Microsoft.AzureCosmosDB"
     Write-Host "Service Endpoints registered." -ForegroundColor Green
 
     # Wait for 2 minutes the changes

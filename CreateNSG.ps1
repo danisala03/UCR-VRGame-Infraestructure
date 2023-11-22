@@ -30,8 +30,12 @@ function CreatePublicNSG {
     Start-Sleep -s 120
 
     # Allow incoming HTTP and HTTPS traffic.
-    az network nsg rule create --resource-group $RgName --nsg-name $NSGName --name AllowHTTP --priority 1000 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 80 --access Allow --protocol Tcp
-    az network nsg rule create --resource-group $RgName --nsg-name $NSGName --name AllowHTTPS --priority 1100 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 443 --access Allow --protocol Tcp
+    Write-Host "Allowing incoming HTTP, HTTPS and SSH traffic..."
+    az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowHTTP --priority 1000 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 80 --access Allow --protocol Tcp
+    az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowHTTPS --priority 1100 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 443 --access Allow --protocol Tcp
+    #az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowSSH --priority 100 --direction Inbound --source-address-prefix '*' --source-port-range '*' --destination-address-prefix '*' --destination-port-range 22 --access Allow --protocol Tcp --description "Allow SSH traffic"
+    az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowFrontDoorToAppServices --priority 100 --direction Inbound --source-address-prefixes '*' --destination-port-ranges 80 443 --access Allow --protocol Tcp --description "Allow traffic from Azure Front Door to App Services"
+    az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowAppServicesToInternet --priority 200 --direction Outbound --source-port-ranges '*' --destination-port-ranges '*' --access Allow --protocol Tcp --description "Allow outbound traffic from App Services to the internet"
 
     # Associate NSG with the subnet.
     $operationResult = az network vnet subnet update -g $RgName --vnet-name $VNetName -n $PublicSubnetName --network-security-group $NSGName
@@ -81,8 +85,11 @@ function CreatePrivateNSG {
     # Allow traffic to Key Vault.
     az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowKeyVault --priority 100 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 443 --access Allow --protocol Tcp
     
-    # Allow traffic to Cosmos DB
+    # Allow traffic to Cosmos DB.
     az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowCosmosDB --priority 110 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 10255 --access Allow --protocol Tcp
+    
+    # Allow traffic to VMSS.
+    az network nsg rule create -g $RgName --nsg-name $NSGName --name AllowVMSSAccess --priority 200 --direction Inbound --source-address-prefixes 10.0.0.0/16 --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges '*'
 
     # Associate NSG with the subnet.
     $operationResult = az network vnet subnet update -g $RgName --vnet-name $VNetName --name $PrivateSubnetName --network-security-group $NSGName
