@@ -55,11 +55,11 @@ Write-Host "Creating App Services"
 
 # First Front End App
 CreateAppService -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location -WebAppName $environmentJson.WebAppNameWestUS -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl -VNetName $environmentJson.VNetName -PublicSubnetName $environmentJson.PublicSubnetName1 -PrivateSubnetName $environmentJson.PrivateSubnetName1
-CreateAppService -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location -WebAppName $environmentJson.WebAppNameEastUS -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl -VNetName $environmentJson.VNetName -PublicSubnetName $environmentJson.PublicSubnetName2 -PrivateSubnetName $environmentJson.VMSSSubnetName
+CreateAppService -RgName $environmentJson.ResourceGroupName -Location $environmentJson.SecondaryLocation -WebAppName $environmentJson.WebAppNameEastUS -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl -VNetName $environmentJson.VNetName -PublicSubnetName $environmentJson.PublicSubnetName2 -PrivateSubnetName $environmentJson.VMSSSubnetName
 
 # Then Game App
 CreateAppService -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location -WebAppName $environmentJson.WebAppNameForGameWestUS -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl -VNetName $environmentJson.VNetName -PublicSubnetName $environmentJson.PrivateSubnetName1 -PrivateSubnetName $environmentJson.PrivateSubnetName1
-CreateAppService -RgName $environmentJson.ResourceGroupName -Location $environmentJson.Location -WebAppName $environmentJson.WebAppNameForGameEastUS -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl -VNetName $environmentJson.VNetName -PublicSubnetName $environmentJson.PrivateSubnetName2 -PrivateSubnetName $environmentJson.VMSSSubnetName
+CreateAppService -RgName $environmentJson.ResourceGroupName -Location $environmentJson.SecondaryLocation -WebAppName $environmentJson.WebAppNameForGameEastUS -Sku $environmentJson.Sku -PythonVersion $environmentJson.PythonVersion -RepoUrl $environmentJson.RepoUrl -VNetName $environmentJson.VNetName -PublicSubnetName $environmentJson.PrivateSubnetName2 -PrivateSubnetName $environmentJson.VMSSSubnetName
 
 # Finally, adds Azure Front Door for Acitve - Pasive architecture
 Write-Host "Creating Azure Front Door"
