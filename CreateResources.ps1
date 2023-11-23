@@ -67,7 +67,7 @@ CreateAzureFrontDoor -RgName $environmentJson.ResourceGroupName -AzFrontDoorProf
 
 # Creates VMSS
 Write-Host "Creating VMSS: $($environmentJson.VMSSName)"
-CreateVMSS -RgName $environmentJson.ResourceGroupName -Location $environmentJson.SecondaryLocation -VMSSName $environmentJson.VMSSName -VNetName $environmentJson.VNetName -VMSSSubnetName $environmentJson.VMSSSubnetName -NSGPublicName $environmentJson.NSGPublicName
+#CreateVMSS -RgName $environmentJson.ResourceGroupName -Location $environmentJson.SecondaryLocation -VMSSName $environmentJson.VMSSName -VNetName $environmentJson.VNetName -VMSSSubnetName $environmentJson.VMSSSubnetName -NSGPublicName $environmentJson.NSGPublicName
 
 # Creates User Assigned Managed Identity
 Write-Host "Creating User Assigned Managed Identity: $($environmentJson.UserAssignedIdentityName)"
